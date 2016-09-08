@@ -16,6 +16,24 @@ $(document).on("pageshow", "#uhome", function () {
     var uid = localStorage.getItem("id");
     if (uid == "") $.mobile.changePage("#home", { role: "page" });
 });
+//-------------------
+//--------------------- login
+$(document).on("pageshow", "#login", function () {
+    document.getElementById("luserid").value = "";
+    document.getElementById("lpassword").value = "";
+});
+
+//--------------------- query
+$(document).on("pageshow", "#query", function () {
+    document.getElementById("tbphone").value = "";
+    document.getElementById("tbrev").value = "";
+});
+
+//--------------------- listhaj
+$(document).on("pageshow", "#house", function () {
+    $('#lhouse').empty();
+    $('#lhouse').listview().listview('refresh');
+});
 //--------------- 
 document.addEventListener("backbutton", onBackKeyDown, false);
 function onBackKeyDown() {
@@ -51,7 +69,7 @@ function onconfirmuser(bno) {
 }
 //---------------- Search
 $(document).on("pageshow", "#searchhaj", function () {
-    listhaj();
+    listhajall();
 });
 //---------------- QR Reader
 $(document).on("pageshow", "#Qrcard", function () {
@@ -65,6 +83,12 @@ $(document).on("pageshow", "#allread", function () {
     $('#lallreader').listview().listview('refresh');
 });
 
+//----------------  all Reader Hajj
+$(document).on("pageshow", "#allhajje", function () {
+    loadop3();
+    $('#lAll').empty();
+    $('#lAll').listview().listview('refresh');
+});
 //---------------- List hajje group
 $(document).on("pageshow", "#listhaj", function () {
     $('#llisthaj').empty();
@@ -138,7 +162,7 @@ function senduser() {
        
         $.ajax({
             type: "POST",
-             url: "http://www.haj2way.com/code/send.ashx",
+              url: "http://www.haj2way.com/code/send.ashx",
             data: { name: name, jawal: jawal, email: email, title: title, message: message },
             success: function (text) {
                 try {
@@ -178,7 +202,7 @@ function loginhaj() {
         }
         $.ajax({
             type: "POST",
-             url: "http://www.haj2way.com/code/loginhaj.ashx",
+              url: "http://www.haj2way.com/code/loginhaj.ashx",
             data: { id: id, rev: rev },
             success: function (text) {
                 try {
@@ -221,7 +245,7 @@ function loginuser() {
         }
         $.ajax({
             type: "POST",
-             url: "http://www.haj2way.com/code/login.ashx",
+              url: "http://www.haj2way.com/code/login.ashx",
             data: { id: id, pass: pass },
             success: function (text) {
                 try {
@@ -256,7 +280,7 @@ function showhajjegroup() {
         var id = localStorage.getItem("pid");
         $.ajax({
             type: "POST",
-             url: "http://www.haj2way.com/code/llisthaj.ashx",
+              url: "http://www.haj2way.com/code/llisthaj.ashx",
             data: {id:id},
             success: function (text) {
                 try {
@@ -293,7 +317,7 @@ function showhajreader(id,name) {
         
         $.ajax({
             type: "POST",
-             url: "http://www.haj2way.com/code/llisthajReader.ashx",
+              url: "http://www.haj2way.com/code/llisthajReader.ashx",
             data: { id: id },
             success: function (text) {
                 try {
@@ -321,12 +345,14 @@ function showhajreader(id,name) {
 }
 
 //--------------------
-function listhaj() {
+function listhajall() {
     try {
         //toast("start");
+        $('#loc').empty();
+        $('#loc').listview().listview('refresh');
         $.ajax({
             type: "POST",
-             url: "http://www.haj2way.com/code/allhajj.ashx",
+              url: "http://www.haj2way.com/code/allhajj.ashx",
             data: {},
             success: function (text) {
                 try {
@@ -357,7 +383,7 @@ function listlogin() {
 
         $.ajax({
             type: "POST",
-             url: "http://www.haj2way.com/code/alllogin.ashx",
+              url: "http://www.haj2way.com/code/alllogin.ashx",
             data: { id: '' },
             success: function (text) {
                 try {
@@ -384,7 +410,40 @@ function listlogin() {
     }
     catch (e) { toast(e); }
 }
+//---------------------
+function LoadAllhajje() {
+    try {
+        var id = document.getElementById("cmball").value;
+       
+        if (id == "0") {
+            toast("من فضلك حدد نوع التفويج");
+            return;
+        }
 
+        $.ajax({
+            type: "POST",
+             url: "http://www.haj2way.com/code/allHajjeReader.ashx",
+            data: { id: id},
+            success: function (text) {
+                try {
+                    $('#lAll').empty();
+                    if (text != "") {
+                        var arr = text.split("//");
+                        var x = 0;
+                        while (x < arr.length - 1) {
+                            var info = arr[x].split(";");
+                            $('<li  data-icon="false" style ="text-align:right " >').append('<h3>' + info[1] + '</h3><h4> رقم المجموعة :' + info[4] + '</h4><h4> رقم العقد :' + info[0] + '</h4><h4>' + info[2] + ' مقعد : ' + info[6] + '</h4><h4> ' + info[3] + '</h4>').appendTo('#lAll');
+                            x = x + 1;
+                        }
+                    }
+                    $('#lAll').listview().listview('refresh');
+                } catch (ex) { toast(ex); }
+            },
+            error: function (msg) { toast('لا يوجد اتصال بالانترنت'); }
+        });
+    }
+    catch (e) { toast(e); }
+}
 //----------------------
 function LoadRead() {
     try {
@@ -399,7 +458,7 @@ function LoadRead() {
 
         $.ajax({
             type: "POST",
-             url: "http://www.haj2way.com/code/alllogin.ashx",
+              url: "http://www.haj2way.com/code/alllogin.ashx",
             data: { id: id, job: job, empid: empid },
             success: function (text) {
                 try {
@@ -434,7 +493,7 @@ function listhouse() {
         // alert("start");
         $.ajax({
             type: "POST",
-             url: "http://www.haj2way.com/code/listhouse.ashx",
+              url: "http://www.haj2way.com/code/listhouse.ashx",
             data: { id: id, job: job },
             success: function (text) {
                 try {
@@ -469,7 +528,7 @@ function showbed(id,name,cid) {
         document.getElementById("showbed").innerHTML =company +"<br/>"+name;
         $.ajax({
             type: "POST",
-             url: "http://www.haj2way.com/code/listbed.ashx",
+              url: "http://www.haj2way.com/code/listbed.ashx",
             data: { id: id,cid:cid},
             success: function (text) {
                 try {
@@ -508,7 +567,7 @@ function Loadprocess(hajno,state) {
        // alert("start");
         $.ajax({
             type: "POST",
-             url: "http://www.haj2way.com/code/processRead.ashx",
+              url: "http://www.haj2way.com/code/processRead.ashx",
             data: { id: id, job: job, empid: empid, hajno: hajno , state : state},
             success: function (text) {
                 try {
@@ -544,7 +603,7 @@ function loadop() {
 
         $.ajax({
             type: "POST",
-             url: "http://www.haj2way.com/code/taf.ashx",
+              url: "http://www.haj2way.com/code/taf.ashx",
             success: function (text) {
                 try {
                     //alert(text);
@@ -574,7 +633,7 @@ function loadop1() {
         
         $.ajax({
             type: "POST",
-             url: "http://www.haj2way.com/code/taf.ashx",
+              url: "http://www.haj2way.com/code/taf.ashx",
             success: function (text) {
                 try {
                     
@@ -604,7 +663,7 @@ function loadop2() {
         //alert("start");
         $.ajax({
             type: "POST",
-             url: "http://www.haj2way.com/code/taf.ashx",
+              url: "http://www.haj2way.com/code/taf.ashx",
             success: function (text) {
                 try {
                     //alert(text);
@@ -619,6 +678,37 @@ function loadop2() {
                             x = x + 1;
                         }
                         $("#cmbf").selectmenu('refresh', true);
+                    }
+                } catch (ex) { toast(ex); }
+            },
+            error: function (msg) { toast('لا يوجد اتصال بالانترنت'); }
+        });
+    }
+    catch (e) { toast(e); }
+}
+
+//-------------------------
+
+function loadop3() {
+    try {
+        //alert("start");
+        $.ajax({
+            type: "POST",
+             url: "http://www.haj2way.com/code/taf.ashx",
+            success: function (text) {
+                try {
+                    //alert(text);
+                    if (text != "") {
+                        $('#cmball').empty();
+                        var arr = text.split("//");
+                        $('#cmball').append('<option value="0">من فضلك حدد نوع التفويج</option>');
+                        var x = 0;
+                        while (x < arr.length - 1) {
+                            var info = arr[x].split(";");
+                            $('#cmball').append('<option value="' + info[0] + '">' + info[1] + '</option>');
+                            x = x + 1;
+                        }
+                        $("#cmball").selectmenu('refresh', true);
                     }
                 } catch (ex) { toast(ex); }
             },
@@ -678,7 +768,7 @@ function savedata(hno, hname) {
         var tid = document.getElementById("cmb").value;
         $.ajax({
             type: "POST",
-             url: "http://www.haj2way.com//code/record.ashx",
+              url: "http://www.haj2way.com/code/record.ashx",
             data: { hajno: hno, tid: tid, id: id },
             success: function (text) {
                 try {

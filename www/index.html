@@ -373,6 +373,11 @@
                  <a href="#house"> <img alt="" src="Images/house.png" style="width: 40px; height: 40px" /></a>
                  <a href="#house" style=" text-decoration:none;"><h4>الصالات</h4> </a>
                  </div>
+                  <div class="ui-block-b">
+                 <a href="#allhajje"> <img alt="" src="Images/hajj.png" style="width: 40px; height: 40px" /></a>
+                 <a href="#allhajje" style=" text-decoration:none;"><h4>قائمة الحجاج</h4> </a>
+                 </div>
+                 
               
                 <div class="ui-block-c">
                     <a href="#home"> <img alt="" src="Images/logout.png" style="width: 40px; height: 40px" /></a>
@@ -545,6 +550,38 @@
       <input style="text-align:right;" id="tbbfind" data-type="search" placeholder="النص المراد البحث عنه" >
      </form>
     <ul data-role="listview" id="lbed" data-filter="true" data-input="#tbbfind" style="margin:10px; font-weight :normal;" data-autodividers="false" data-inset="false" data-split-icon="arrow-l" data-split-theme="d">
+    
+    </ul>
+     
+    </div>
+  <div data-role="footer" data-position="fixed" >
+  <h6 style="text-align:center;">جميع الحقوق محفوظة لمخيم الرشاد  2015</h6>
+  </div>
+</div>
+
+
+
+
+<!-- list bus hajje   -->
+<div data-role="page" id="allhajje" data-theme="b">
+  <div data-role="header" data-position="fixed" >
+        <h1 style="text-align:center;">شركة مخيم الرشاد  </h1>
+        <a href="#uhome"  class="ui-btn ui-btn-right  ui-icon-grid  ui-btn-icon-notext" ></a>
+  </div>
+     <div data-role="content" class="ui-content">
+      <h1 style="text-align:center">حجاج التفويج</h1>
+       <button onclick="LoadAllhajje()" class="ui-btn  ui-shadow ui-corner-all" style="background-color:#0ec2db; color:White; margin:10px" > عرض القراءات </button>
+            <div class="ui-field-contain" style="text-align:right; direction:rtl;">
+            
+            <select name="cmball" id="cmball" data-iconpos="left" style="text-align:right; direction:rtl;">
+                <option value="0">يجب تحديد نوع التفويج</option>
+                
+            </select>
+           </div>
+      <form class="ui-filterable" dir="rtl;">
+      <input style="text-align:right;" id="tball" data-type="search" placeholder="النص المراد البحث عنه" >
+     </form>
+    <ul data-role="listview" id="lAll" data-filter="true" data-input="#tball" style="margin:10px; font-weight :normal;" data-autodividers="false" data-inset="false" data-split-icon="arrow-l" data-split-theme="d">
     
     </ul>
      
